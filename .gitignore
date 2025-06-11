@@ -1,0 +1,15 @@
+# VS Code workspace settings
+.vscode/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Node modules (if using npm for development)
+node_modules/
+
+# Composer (if using PHP dependencies)
+vendor/
+
+# WordPress plugin build artifacts
+*.zip
