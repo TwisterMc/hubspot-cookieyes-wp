@@ -14,7 +14,7 @@
     // Updates HubSpot consent settings with input validation
     const setHubSpotConsent = (consentDetails) => {
         if (!consentDetails || typeof consentDetails !== 'object') {
-            console.error('Invalid consent details provided');
+            console.error('HubSpot CookieYes Integration: Invalid consent details provided');
             return;
         }
 
@@ -52,7 +52,7 @@
 
         const categories = event.detail.categories;
         if (!categories || typeof categories !== 'object') {
-            console.error('Invalid categories object:', categories);
+            console.error('HubSpot CookieYes Integration: Invalid categories object:', categories);
             return;
         }
 
@@ -73,7 +73,7 @@
 
         const accepted = event.detail.accepted;
         if (!Array.isArray(accepted)) {
-            console.error('Invalid accepted categories array:', accepted);
+            console.error('HubSpot CookieYes Integration: Invalid accepted categories array:', accepted);
             return;
         }
 

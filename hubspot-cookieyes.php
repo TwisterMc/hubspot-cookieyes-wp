@@ -23,11 +23,6 @@ function hscy_load_textdomain() {
 }
 add_action( 'init', 'hscy_load_textdomain' );
 
-// Define plugin constants
-define( 'HSCY_VERSION', '1.0.0' );
-define( 'HSCY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'HSCY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-
 /**
  * Output the HubSpot CookieYes integration script directly in head.
  *
@@ -39,24 +34,24 @@ define( 'HSCY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  * @return void
  */
 function hscy_output_early_script() {
-    $js_path = HSCY_PLUGIN_DIR . 'js/hubspot-cookieyes.js?' . HSCY_VERSION;
+    $js_file = plugin_dir_path( __FILE__ ) . 'js/hubspot-cookieyes.js';
     
-    if ( ! file_exists( rtrim( $js_path, '?' . HSCY_VERSION ) ) || ! is_readable( rtrim( $js_path, '?' . HSCY_VERSION ) ) ) {
+    if ( ! file_exists( $js_file ) || ! is_readable( $js_file ) ) {
         error_log( 
             sprintf(
                 /* translators: %s: JavaScript file path */
                 esc_html__( 'HubSpot CookieYes Integration: JavaScript file not found or not readable at %s', 'hubspot-cookieyes' ),
-                rtrim( $js_path, '?' . HSCY_VERSION )
+                $js_file
             )
         );
         return;
     }
 
-    // Generate a nonce for the script
-    $nonce = wp_create_nonce( 'hscy-script' );
+    // Generate a nonce for the script with descriptive action
+    $nonce = wp_create_nonce( 'hscy_output_script' );
     
     // Read file content safely
-    $content = file_get_contents( $js_path );
+    $content = file_get_contents( $js_file );
     if ( $content === false ) {
         error_log( esc_html__( 'HubSpot CookieYes Integration: Failed to read JavaScript file', 'hubspot-cookieyes' ) );
         return;
@@ -64,12 +59,10 @@ function hscy_output_early_script() {
 
     // Output script with nonce and proper escaping
     printf(
-        '<script nonce="%s">%s%s%s</script>%s',
+        '<script nonce="%s">%s</script>%s',
         esc_attr( $nonce ),
-        PHP_EOL,
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static file content, already sanitized
         $content,
-        PHP_EOL,
         PHP_EOL
     );
 }
