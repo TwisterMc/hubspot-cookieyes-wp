@@ -17,7 +17,7 @@ This plugin bridges the gap between HubSpot and CookieYes consent management sys
 ## Requirements
 
 - WordPress 5.0 or higher
-- HubSpot tracking code installed on your site
+- HubSpot tracking code installed on your site or the [HubSpot WordPress plugin](https://wordpress.org/plugins/leadin/)
 - CookieYes plugin installed and configured
 - PHP 7.4 or higher
 
