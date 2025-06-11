@@ -6,12 +6,22 @@
  * Author: Thomas McMahon
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: hubspot-cookieyes
+ * Domain Path: /languages
  */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
+
+/**
+ * Load plugin textdomain.
+ */
+function hscy_load_textdomain() {
+    load_plugin_textdomain( 'hubspot-cookieyes', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+}
+add_action( 'init', 'hscy_load_textdomain' );
 
 // Define plugin constants
 define( 'HSCY_VERSION', '1.0.0' );
@@ -32,7 +42,13 @@ function hscy_output_early_script() {
     $js_path = HSCY_PLUGIN_DIR . 'js/hubspot-cookieyes.js?' . HSCY_VERSION;
     
     if ( ! file_exists( rtrim( $js_path, '?' . HSCY_VERSION ) ) || ! is_readable( rtrim( $js_path, '?' . HSCY_VERSION ) ) ) {
-        error_log( 'HubSpot CookieYes Integration: JavaScript file not found or not readable' );
+        error_log( 
+            sprintf(
+                /* translators: %s: JavaScript file path */
+                esc_html__( 'HubSpot CookieYes Integration: JavaScript file not found or not readable at %s', 'hubspot-cookieyes' ),
+                rtrim( $js_path, '?' . HSCY_VERSION )
+            )
+        );
         return;
     }
 
@@ -42,7 +58,7 @@ function hscy_output_early_script() {
     // Read file content safely
     $content = file_get_contents( $js_path );
     if ( $content === false ) {
-        error_log( 'HubSpot CookieYes Integration: Failed to read JavaScript file' );
+        error_log( esc_html__( 'HubSpot CookieYes Integration: Failed to read JavaScript file', 'hubspot-cookieyes' ) );
         return;
     }
 
